@@ -26,10 +26,21 @@ func compact(collection []string) []string {
 	return result
 }
 
+func FindAllByCommand(query string) []Process {
+	var collection []Process
+	processes := Processes()
+	for i := 0; i < len(processes); i++ {
+		if strings.Contains(processes[i].Command, query) {
+			collection = append(collection, processes[i])
+		}
+	}
+	return collection
+}
+
 func FindByPid(pid int64) Process {
 	var process Process
 	processes := Processes()
-	for i := 1; i < len(processes); i++ {
+	for i := 0; i < len(processes); i++ {
 		if processes[i].Pid == pid {
 			process = processes[i]
 			break
@@ -45,7 +56,7 @@ func FindByPidFilePath(pid_file string) Process {
 	if err == nil {
 		pid, _ := strconv.ParseInt(strings.Trim(string(file), "\n"), 10, 64)
 
-		for i := 1; i < len(processes); i++ {
+		for i := 0; i < len(processes); i++ {
 			if processes[i].Pid == pid {
 				process = processes[i]
 				break
