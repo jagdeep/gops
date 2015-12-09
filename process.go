@@ -1,6 +1,7 @@
 package ps
 
 import (
+	"io/ioutil"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -25,6 +26,35 @@ func compact(collection []string) []string {
 	return result
 }
 
+func FindByPid(pid int64) Process {
+	var process Process
+	processes := Processes()
+	for i := 1; i < len(processes); i++ {
+		if processes[i].Pid == pid {
+			process = processes[i]
+			break
+		}
+	}
+	return process
+}
+
+func FindByPidFilePath(pid_file string) Process {
+	var process Process
+	processes := Processes()
+	file, err := ioutil.ReadFile(pid_file)
+	if err == nil {
+		pid, _ := strconv.ParseInt(strings.Trim(string(file), "\n"), 10, 64)
+
+		for i := 1; i < len(processes); i++ {
+			if processes[i].Pid == pid {
+				process = processes[i]
+				break
+			}
+		}
+	}
+	return process
+}
+
 // USER PID %CPU %MEM VSZ RSS TT STAT STARTED TIME COMMAND
 func Processes() []Process {
 	var result []Process
@@ -47,8 +77,4 @@ func Processes() []Process {
 		}
 	}
 	return result
-}
-
-func main() {
-	Processes()
 }
