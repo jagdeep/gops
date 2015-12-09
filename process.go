@@ -48,7 +48,7 @@ func Processes() []Process {
 			fmt.Println(process)
 		}
 	}
-	return process
+	return result
 }
 
 func main() {
