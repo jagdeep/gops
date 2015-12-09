@@ -1,7 +1,6 @@
 package ps
 
 import (
-	"fmt"
 	"os/exec"
 	"strconv"
 	"strings"
@@ -26,7 +25,7 @@ func compact(collection []string) []string {
 	return result
 }
 
-// USER              PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
+// USER PID %CPU %MEM VSZ RSS TT STAT STARTED TIME COMMAND
 func Processes() []Process {
 	var result []Process
 	output, _ := exec.Command("ps", "aux").CombinedOutput()
@@ -45,7 +44,6 @@ func Processes() []Process {
 				process.Command = process.Command + " " + parts[j]
 			}
 			result = append(result, process)
-			fmt.Println(process)
 		}
 	}
 	return result
